@@ -4331,7 +4331,7 @@ WHERE cast(getdate() AS date) between cast(dy.Donem1BaslangicTarihi AS date) AND
                                             COALESCE(NULLIF(ax.[description] collate SQL_Latin1_General_CP1254_CI_AS,''''),axx.[description_eng]  collate SQL_Latin1_General_CP1254_CI_AS) AS aciklama, 
                                             ssss.url ,'''' as pageurl 
                                     into '+@settable+'
-                                    FROM (
+                                    FROM ( 
                                             SELECT ISNULL(count(M.MesajID), 0) AS adet, 2 AS tip, ''Aktiviteler'' AS aciklama, ''http://mobile.okulsis.net:8280/okulsis/image/okulsis/time.png'' AS url                                           
                                             FROM ".$dbnamex."MSJ_Mesajlar M 
                                             INNER JOIN ".$dbnamex."MSJ_MesajKutulari MK ON M.MesajID = MK.MesajID 

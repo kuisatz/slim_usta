@@ -64,10 +64,7 @@ class config {
                 'filterOnlyOrder' => 'Services\Filter\FilterOnlyOrder',
                 
                 'pgConnectFactoryMobil' => 'Services\Database\Postgresql\PostgreSQLConnectPDOMobil',
-                'pgConnectFactoryBilsanet' => 'Services\Database\Postgresql\PostgreSQLConnectPDOBilsanet',
-                'pgConnectFactoryTedAnkara' => 'Services\Database\Postgresql\PostgreSQLConnectPDOTedAnkara',
-                
-                
+                 
               
             ],
         ),

@@ -23,16 +23,12 @@ class PostgreSQLConnectLogPDO implements \Zend\ServiceManager\FactoryInterface {
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
         try {
-           /* $pdo = new \PDO('pgsql:dbname=development_logs;host=localhost;',
+            $pdo = new \PDO('pgsql:dbname=acilusta_log;host=185.86.4.73;',
                             'postgres',
                             '1Qaaal123',
                             PostgreSQLConnectPDOConfig::getConfig());
-            * 
-            */
-             $pdo = new \PDO("sqlsrv:Server=ZZX;Database=Bilsanet1", 
-                            "sa", 
-                            "12345678oki"
-                            );
+       
+   
      
             return $pdo;
         } catch (PDOException $e) {
