@@ -16,7 +16,7 @@ namespace DAL\PDO;
  * @
  * @author Okan CIRAN
  */
-class InfoCenterCities extends \DAL\DalSlim {
+class InfoCenterPictures extends \DAL\DalSlim {
 
     /**    
      * @author Okan CIRAN
@@ -337,33 +337,41 @@ class InfoCenterCities extends \DAL\DalSlim {
      * @return array
      * @throws \PDOException
      */
-    public function fillMainCities($params = array()) {
+    public function fillMainPictures($params = array()) {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory'); 
             
             $countryID = "91";                            
             if ((isset($params['CountryID']) && $params['CountryID'] != "")) { 
                 $countryID = $params['CountryID'];  
-            }
-            $languageIdValue = 647;
-            if (isset($params['LanguageID']) && $params['LanguageID'] != "") {
-                $languageIdValue = $params['LanguageID'];
-            }  
+            } 
              
             $sql = "
-             SELECT distinct  
-                        a.ilid as id,  
-			COALESCE(NULLIF(ci.name, ''), ci.name_eng) AS name ,
-                       /* ci.name_eng,*/
-			ci.priority
-                FROM info_center_cities a	
-		INNER JOIN sys_language l ON l.id = ".$languageIdValue." AND l.deleted =0 AND l.active =0 
-		INNER JOIN sys_countrys c ON  c.language_id = l.id AND c.deleted =0 AND c.active =0   
-                INNER JOIN sys_city ci ON ci.country_id = c.id AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0  AND ci.combo =0 
-                WHERE  
-                    c.id = ".$countryID." AND   
-		    a.deleted =0 AND a.active =0   
-                    ORDER BY ci.priority,COALESCE(NULLIF(ci.name, ''), ci.name_eng)
+                select * from  ( 
+                    SELECT    a.id,    CAST(random()*100-1 AS int) AS ccc, 0 as control,
+                      concat( ip,replace (a.road ,'\','/') ) as road 
+                      FROM public.info_center_pictures a 
+                      inner join sys_project_settings sps on sps.op_project_id = 1
+                      where a.sys_center_id = 114 
+                      and a.country_id = 91 
+                      and a.ilid = 6 
+                    and a.active = 0 and  a.deleted =0 
+                    and a.road is not null  
+                UNION 
+                    SELECT   
+                        a.id,    
+                        CAST(random()*100-1 AS int) AS ccc,  0 as control,
+                        concat( ip,replace (a.road ,'\','/') ) as road 
+                    FROM info_center_pictures a
+                    INNER JOIN sys_project_settings sps ON sps.op_project_id = 1
+                    WHERE a.sys_center_id = 114 AND
+                        a.country_id = ".$countryID." AND 
+                        a.active = 0 AND a.deleted =0 AND
+                        a.info_center_id =0 AND
+                        a.road IS NOT NULL 
+                        ) as asasdd
+                ORDER BY asasdd.ccc DESC  
+                LIMIT 10   
                                " ;
             $statement = $pdo->prepare($sql);
            //  echo debugPDO($sql, $params);
@@ -387,41 +395,55 @@ class InfoCenterCities extends \DAL\DalSlim {
      * @return array
      * @throws \PDOException
      */
-    public function fillMainCityBorough($params = array()) {
+    public function fillMainCenterPictures($params = array()) {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory'); 
             
             $countryID = "91";                            
             if ((isset($params['CountryID']) && $params['CountryID'] != "")) { 
                 $countryID = $params['CountryID'];  
-            }
-            $cityID = "-6";                            
+            } 
+            $limit = 10; 
+            $CenterID = "-66";                            
+            if ((isset($params['CenterID']) && $params['CenterID'] != "")) { 
+                $CenterID = $params['CenterID'];  
+                $limit = 6 ; 
+            } 
+            $vCityID = "6";                            
             if ((isset($params['CityID']) && $params['CityID'] != "")) { 
-                $cityID = $params['CityID'];  
-            }
-            $languageIdValue = 647;
-            if (isset($params['LanguageID']) && $params['LanguageID'] != "") {
-                $languageIdValue = $params['LanguageID'];
-            }  
+                $vCityID = $params['CityID'];  
+            } 
              
             $sql = "
-                SELECT distinct 
-			a.ilceid as id,  
-                        COALESCE(NULLIF(b.name, ''), b.name_eng) AS name  
-                FROM info_center_cities a	
-		INNER JOIN sys_language l ON l.id = ".$languageIdValue." AND l.deleted =0 AND l.active =0 
-		INNER JOIN sys_countrys c ON  c.language_id = l.id  AND c.deleted =0 AND c.active =0   
-                INNER JOIN sys_borough b on b.country_id = 91 AND b.city_id = a.ilid and b.boroughs_id = a.ilceid AND b.language_id = l.id AND b.deleted =0 AND b.active =0  	
-                INNER JOIN sys_city ci ON ci.country_id = 91 AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0 AND ci.combo =0 
-                WHERE  
-                    c.id = ".$countryID." AND
-                    a.ilid = ".$cityID."   
-		    AND a.deleted =0 AND a.active =0
-                ORDER BY COALESCE(NULLIF(b.name, ''), b.name_eng)
-         
+                 select * from  ( 
+                    SELECT a.id,CAST(random()*100-1 AS int) AS ccc, 0 as control,
+                      concat( ip,replace (a.road ,'\','/') ) as road  
+                    FROM public.info_center_pictures a 
+                    INNER JOIN sys_project_settings sps on sps.op_project_id = 1
+                    WHERE a.sys_center_id = 114 
+                        and a.country_id = 91 
+                        and a.ilid = 6 
+                        and a.active = 0 and  a.deleted =0 
+                        and a.road is not null  
+                UNION 
+                SELECT   
+                    a.id,    
+                    CAST(random()*100-1 AS int) AS ccc, 1 as control, 
+                    concat( ip,replace (a.road ,'\','/') ) as road 
+                FROM info_center_pictures a
+                INNER JOIN sys_project_settings sps ON sps.op_project_id = 1
+                WHERE sys_center_id = ".$CenterID." AND
+                    a.country_id = ".$countryID." AND
+                    a.ilid = ".$vCityID." AND
+                    a.active = 0 AND a.deleted =0 AND
+                    a.info_center_id =0 AND
+                    a.road IS NOT NULL 
+                ) as asasdd
+                ORDER BY asasdd.ccc DESC  
+                LIMIT ".$limit."    
                                " ;
             $statement = $pdo->prepare($sql);
-           //  echo debugPDO($sql, $params);
+     //   echo debugPDO($sql, $params);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC); 
             $errorInfo = $statement->errorInfo();
@@ -433,8 +455,74 @@ class InfoCenterCities extends \DAL\DalSlim {
         }
     }
     
- 
-    
+    /** 
+     * @author Okan CIRAN
+     * su  an kullanılmıyor
+     * @ combobox doldurmak için info_center_cities tablosundan parent ı 0 olan kayıtları (Ana grup) döndürür !!
+     * @version v 1.0  25.01.2016
+     * @param array | null $args
+     * @return array
+     * @throws \PDOException
+     */
+    public function fillMainOfisPictures($params = array()) {
+        try {
+            $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory'); 
+            
+            $countryID = "-91";                            
+            if ((isset($params['CountryID']) && $params['CountryID'] != "")) { 
+                $countryID = $params['CountryID'];  
+            } 
+            $limit = 6; 
+            $CenterID = "-113";                            
+            if ((isset($params['CenterID']) && $params['CenterID'] != "")) { 
+                $CenterID = $params['CenterID'];  
+                $limit = 6 ; 
+            } 
+            $vCityID = "-6";                            
+            if ((isset($params['CityID']) && $params['CityID'] != "")) { 
+                $vCityID = $params['CityID'];  
+            } 
+             
+            $sql = "
+                 SELECT * FROM ( 
+                    SELECT a.id,CAST(random()*100-1 AS int) AS ccc, 0 as control,
+                      concat( ip,replace (a.road ,'\','/') ) as road  
+                    FROM public.info_center_pictures a 
+                    INNER JOIN sys_project_settings sps on sps.op_project_id = 1
+                    WHERE a.sys_center_id = 113 
+                        and a.country_id = 91 
+                        and a.ilid = 6 
+                        and a.active = 0 and  a.deleted =0 
+                        and a.road is not null  
+                UNION 
+                SELECT   
+                    a.id,    
+                    CAST(random()*100-1 AS int) AS ccc, 1 as control, 
+                    concat( ip,replace (a.road ,'\','/') ) as road 
+                FROM info_center_pictures a
+                INNER JOIN sys_project_settings sps ON sps.op_project_id = 1
+                WHERE sys_center_id = 113 AND
+                    a.country_id = ".$countryID." AND
+                    a.ilid = ".$vCityID." AND
+                    a.active = 0 AND a.deleted =0 AND
+                    a.info_center_id =0 AND
+                    a.road IS NOT NULL 
+                ) as asasdd
+                ORDER BY asasdd.ccc DESC  
+                LIMIT ".$limit."    
+                               " ;
+            $statement = $pdo->prepare($sql);
+     //   echo debugPDO($sql, $params);
+            $statement->execute();
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC); 
+            $errorInfo = $statement->errorInfo();
+            if ($errorInfo[0] != "00000" && $errorInfo[1] != NULL && $errorInfo[2] != NULL)
+                throw new \PDOException($errorInfo[0]);
+            return array("found" => true, "errorInfo" => $errorInfo, "resultSet" => $result);
+        } catch (\PDOException $e /* Exception $e */) {        
+            return array("found" => false, "errorInfo" => $e->getMessage());
+        }
+    }
     
 }
     

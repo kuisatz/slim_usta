@@ -16,11 +16,11 @@ namespace DAL\PDO;
  * @
  * @author Okan CIRAN
  */
-class InfoCenterCities extends \DAL\DalSlim {
+class InfoCenter extends \DAL\DalSlim {
 
     /**    
      * @author Okan CIRAN
-     * @ info_center_cities tablosundan parametre olarak  gelen id kaydını siler. !!
+     * @ info_center tablosundan parametre olarak  gelen id kaydını siler. !!
      * @version v 1.0  25.01.2016
      * @param type $params
      * @return array
@@ -34,7 +34,7 @@ class InfoCenterCities extends \DAL\DalSlim {
 
     /**     
      * @author Okan CIRAN
-     * @ info_center_cities tablosundaki tüm kayıtları getirir.  !!
+     * @ info_center tablosundaki tüm kayıtları getirir.  !!
      * @version v 1.0  25.01.2016    
      * @return array
      * @throws \PDOException
@@ -49,7 +49,7 @@ class InfoCenterCities extends \DAL\DalSlim {
 
     /**    
      * @author Okan CIRAN
-     * @ info_center_cities tablosuna yeni bir kayıt oluşturur.  !!
+     * @ info_center tablosuna yeni bir kayıt oluşturur.  !!
      * @version v 1.0  25.01.2016
      * @return array
      * @throws \PDOException
@@ -61,7 +61,7 @@ class InfoCenterCities extends \DAL\DalSlim {
             $kontrol = $this->haveRecords($params); 
             if (!\Utill\Dal\Helper::haveRecord($kontrol)) { 
                 $sql = "
-                INSERT INTO info_center_cities(
+                INSERT INTO info_center(
                         ilid, ilceid, mahalleid,user_id)
                 VALUES (
                         :ilid,
@@ -72,7 +72,7 @@ class InfoCenterCities extends \DAL\DalSlim {
                 $statement = $pdo->prepare($sql); 
                // echo debugPDO($sql, $params);
                 $result = $statement->execute();
-                $insertID = $pdo->lastInsertId('info_center_cities_id_seq');
+                $insertID = $pdo->lastInsertId('info_center_id_seq');
                 $errorInfo = $statement->errorInfo();
                 if ($errorInfo[0] != "00000" && $errorInfo[1] != NULL && $errorInfo[2] != NULL)
                     throw new \PDOException($errorInfo[0]);
@@ -92,7 +92,7 @@ class InfoCenterCities extends \DAL\DalSlim {
 
     /**    
      * @author Okan CIRAN
-     * @ info_center_cities tablosunda name sutununda daha önce oluşturulmuş mu? 
+     * @ info_center tablosunda name sutununda daha önce oluşturulmuş mu? 
      * @version v 1.0 15.01.2016
      * @return array
      * @throws \PDOException
@@ -110,7 +110,7 @@ class InfoCenterCities extends \DAL\DalSlim {
                 '" . $params['mahalleid'] . "' AS value , 
                 mahalleid ='" . $params['mahalleid'] . "' AS control,
                 concat(  ' daha önce kayıt edilmiş. Lütfen Kontrol Ediniz !!!' ) AS message
-            FROM info_center_cities                
+            FROM info_center                
             WHERE ilid = " . $params['ilid'] . " AND 
                 ilceid = " . $params['ilceid'] . " AND 
                 mahalleid = " . $params['mahalleid'] . "" 
@@ -132,7 +132,7 @@ class InfoCenterCities extends \DAL\DalSlim {
 
     /**   
      * @author Okan CIRAN
-     * info_center_cities tablosuna parametre olarak gelen id deki kaydın bilgilerini günceller   !!
+     * info_center tablosuna parametre olarak gelen id deki kaydın bilgilerini günceller   !!
      * @version v 1.0  25.01.2016
      * @param type $params
      * @return array
@@ -145,7 +145,7 @@ class InfoCenterCities extends \DAL\DalSlim {
             $kontrol = $this->haveRecords($params); 
             if (!\Utill\Dal\Helper::haveRecord($kontrol)) {
                 $sql = "
-                UPDATE info_center_cities
+                UPDATE info_center
                 SET   
                     ilid = :ilid,
                     ilceid = :ilceid,
@@ -179,7 +179,7 @@ class InfoCenterCities extends \DAL\DalSlim {
  
     /**  
      * @author Okan CIRAN
-     * @ Gridi doldurmak için info_center_cities tablosundan kayıtları döndürür !!
+     * @ Gridi doldurmak için info_center tablosundan kayıtları döndürür !!
      * @version v 1.0  25.01.2016
      * @param array | null $args
      * @return array
@@ -250,9 +250,9 @@ class InfoCenterCities extends \DAL\DalSlim {
                             sd.description AS state_deleted,  
                             sd1.description AS state_active,  
                             u.username
-                        FROM info_center_cities a  
-                        INNER JOIN info_center_cities sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = a.language_code AND sd.deleted = 0 AND sd.active = 0 
-                        INNER JOIN info_center_cities sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = a.language_code AND sd1.deleted = 0 AND sd1.active = 0
+                        FROM info_center a  
+                        INNER JOIN info_center sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = a.language_code AND sd.deleted = 0 AND sd.active = 0 
+                        INNER JOIN info_center sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = a.language_code AND sd1.deleted = 0 AND sd1.active = 0
                         INNER JOIN sys_language l ON l.language_main_code = a.language_code AND l.deleted = 0 AND l.active = 0 
                         INNER JOIN info_users u ON u.id = a.user_id 
                         WHERE a.deleted =0 AND language_code = '" . $params['language_code'] . "' ) AS asd               
@@ -283,7 +283,7 @@ class InfoCenterCities extends \DAL\DalSlim {
 
     /** 
      * @author Okan CIRAN
-     * @ Gridi doldurmak için info_center_cities tablosundan çekilen kayıtlarının kaç tane olduğunu döndürür   !!
+     * @ Gridi doldurmak için info_center tablosundan çekilen kayıtlarının kaç tane olduğunu döndürür   !!
      * @version v 1.0  25.01.2016
      * @param array | null $args
      * @return array
@@ -298,19 +298,19 @@ class InfoCenterCities extends \DAL\DalSlim {
             $sql = "
                 SELECT 
                     COUNT(a.id) AS COUNT ,
-                    (SELECT COUNT(a1.id) FROM info_center_cities a1  
-                    INNER JOIN info_center_cities sd1x ON sd1x.main_group = 15 AND sd1x.first_group= a1.deleted AND sd1x.language_code = 'tr' AND sd1x.deleted = 0 AND sd1x.active = 0
-                    INNER JOIN info_center_cities sd11 ON sd11.main_group = 16 AND sd11.first_group= a1.active AND sd11.language_code = 'tr' AND sd11.deleted = 0 AND sd11.active = 0                             
+                    (SELECT COUNT(a1.id) FROM info_center a1  
+                    INNER JOIN info_center sd1x ON sd1x.main_group = 15 AND sd1x.first_group= a1.deleted AND sd1x.language_code = 'tr' AND sd1x.deleted = 0 AND sd1x.active = 0
+                    INNER JOIN info_center sd11 ON sd11.main_group = 16 AND sd11.first_group= a1.active AND sd11.language_code = 'tr' AND sd11.deleted = 0 AND sd11.active = 0                             
                     INNER JOIN info_users u1 ON u1.id = a1.user_id 
                      " . $whereSQL1 . " ) AS undeleted_count, 
-                    (SELECT COUNT(a2.id) FROM info_center_cities a2
-                    INNER JOIN info_center_cities sd2 ON sd2.main_group = 15 AND sd2.first_group= a2.deleted AND sd2.language_code = 'tr' AND sd2.deleted = 0 AND sd2.active = 0
-                    INNER JOIN info_center_cities sd12 ON sd12.main_group = 16 AND sd12.first_group= a2.active AND sd12.language_code = 'tr' AND sd12.deleted = 0 AND sd12.active = 0                             
+                    (SELECT COUNT(a2.id) FROM info_center a2
+                    INNER JOIN info_center sd2 ON sd2.main_group = 15 AND sd2.first_group= a2.deleted AND sd2.language_code = 'tr' AND sd2.deleted = 0 AND sd2.active = 0
+                    INNER JOIN info_center sd12 ON sd12.main_group = 16 AND sd12.first_group= a2.active AND sd12.language_code = 'tr' AND sd12.deleted = 0 AND sd12.active = 0                             
                     INNER JOIN info_users u2 ON u2.id = a2.user_id 			
                       " . $whereSQL2 . " ) AS deleted_count                        
-                FROM info_center_cities a
-                INNER JOIN info_center_cities sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = 'tr' AND sd.deleted = 0 AND sd.active = 0
-                INNER JOIN info_center_cities sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = 'tr' AND sd1.deleted = 0 AND sd1.active = 0                             
+                FROM info_center a
+                INNER JOIN info_center sd ON sd.main_group = 15 AND sd.first_group= a.deleted AND sd.language_code = 'tr' AND sd.deleted = 0 AND sd.active = 0
+                INNER JOIN info_center sd1 ON sd1.main_group = 16 AND sd1.first_group= a.active AND sd1.language_code = 'tr' AND sd1.deleted = 0 AND sd1.active = 0                             
                 INNER JOIN info_users u ON u.id = a.user_id 
                 " . $whereSQL . "
                     ";
@@ -329,15 +329,14 @@ class InfoCenterCities extends \DAL\DalSlim {
     }
 
     /** 
-     * @author Okan CIRAN
-     * su  an kullanılmıyor
-     * @ combobox doldurmak için info_center_cities tablosundan parent ı 0 olan kayıtları (Ana grup) döndürür !!
+     * @author Okan CIRAN 
+     * @ combobox doldurmak için info_center tablosundan parent ı 0 olan kayıtları (Ana grup) döndürür !!
      * @version v 1.0  25.01.2016
      * @param array | null $args
      * @return array
      * @throws \PDOException
      */
-    public function fillMainCities($params = array()) {
+    public function fillCentersCraftsList($params = array()) {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory'); 
             
@@ -349,21 +348,66 @@ class InfoCenterCities extends \DAL\DalSlim {
             if (isset($params['LanguageID']) && $params['LanguageID'] != "") {
                 $languageIdValue = $params['LanguageID'];
             }  
+            $centerID = "-66";                            
+            if ((isset($params['CenterID']) && $params['CenterID'] != "")) { 
+                $centerID = $params['CenterID'];  
+            }
+            $IlID = "-6";                            
+            if ((isset($params['CityID']) && $params['CityID'] != "")) { 
+                $IlID = $params['CityID'];  
+            }
+            $IlceID = "-6";                            
+            if ((isset($params['BoroughID']) && $params['BoroughID'] != "")) { 
+                $IlceID = $params['BoroughID'];  
+            }
              
-            $sql = "
-             SELECT distinct  
-                        a.ilid as id,  
-			COALESCE(NULLIF(ci.name, ''), ci.name_eng) AS name ,
-                       /* ci.name_eng,*/
-			ci.priority
-                FROM info_center_cities a	
-		INNER JOIN sys_language l ON l.id = ".$languageIdValue." AND l.deleted =0 AND l.active =0 
-		INNER JOIN sys_countrys c ON  c.language_id = l.id AND c.deleted =0 AND c.active =0   
-                INNER JOIN sys_city ci ON ci.country_id = c.id AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0  AND ci.combo =0 
-                WHERE  
-                    c.id = ".$countryID." AND   
-		    a.deleted =0 AND a.active =0   
-                    ORDER BY ci.priority,COALESCE(NULLIF(ci.name, ''), ci.name_eng)
+            $sql = " 
+                SELECT distinct * FROM ( 
+                    SELECT ic.id, ic.center_id, ic.center_verbal_id, ic.ilid, ic.ilceid, ic.mahalleid, 0 as kontrol, 
+                        COALESCE(NULLIF(icx.description, ''), ic.description_eng) AS description ,  
+                        Concat(COALESCE(NULLIF(icvx.name, ''), icv.name_eng) ,'  --  ' ,sb.name ) AS name  ,
+                        sb.name as ilce
+                    FROM  info_center ic  
+                    INNER JOIN info_center_verbal icv on icv.id = ic.center_verbal_id and icv.active =0 and icv.deleted =0 and icv.language_parent_id =0 and icv.country_id =".$countryID."
+                    LEFT JOIN sys_language lx ON lx.id = ".$languageIdValue." AND lx.deleted =0 AND lx.active =0
+                    LEFT JOIN info_center_verbal icvx on (icvx.id = ic.center_verbal_id OR icvx.language_parent_id =ic.center_verbal_id) and icvx.active =0 and icvx.deleted =0 and icvx.language_id = lx.id
+                    LEFT JOIN info_center icx on (icx.id = ic.id OR icx.language_parent_id =ic.id) and icx.active =0 and icx.deleted =0 and icx.language_id = lx.id
+                    INNER JOIN sys_city sc ON sc.city_id = ic.ilid 
+                    INNER JOIN sys_borough sb on sb.city_id = ic.ilid AND  sb.boroughs_id= ic.ilceid
+                    WHERE 
+                        ic.language_parent_id =0 and 
+                        ic.active =0 and ic.deleted =0 and 
+                        ic.center_id =  ".$centerID." and 
+                        ic.ilid = ".$IlID." and 
+                        0= (SELECT  count(1)
+                                  FROM  info_center ic  
+                                  INNER JOIN info_center_verbal icv on icv.id = ic.center_verbal_id and icv.active =0 and icv.deleted =0 and icv.language_parent_id =0
+                                  where 
+                                        ic.language_parent_id =0 and 
+                                        ic.active =0 and ic.deleted =0 and 
+                                        ic.center_id = ".$centerID." and 
+                                        ic.ilid = ".$IlID."  and 
+                                        ic.ilceid = ".$IlceID." )   
+                UNION 
+                    SELECT ic.id, ic.center_id, ic.center_verbal_id, ic.ilid, ic.ilceid, ic.mahalleid, 1 as kontrol, 
+                        COALESCE(NULLIF(icx.description, ''), ic.description_eng) AS description ,  
+                        COALESCE(NULLIF(icvx.name, ''), icv.name_eng) AS name  ,sb.name as ilce
+                    FROM  info_center ic  
+                    INNER JOIN info_center_verbal icv on icv.id = ic.center_verbal_id and icv.active =0 and icv.deleted =0 and icv.language_parent_id =0 and icv.country_id =".$countryID." 
+                    LEFT JOIN sys_language lx ON lx.id = ".$languageIdValue." AND lx.deleted =0 AND lx.active =0
+                    LEFT JOIN info_center_verbal icvx on (icvx.id = ic.center_verbal_id OR icvx.language_parent_id =ic.center_verbal_id) and icvx.active =0 and icvx.deleted =0 and icvx.language_id = lx.id
+                    LEFT JOIN info_center icx on (icx.id = ic.id OR icx.language_parent_id =ic.id) and icx.active =0 and icx.deleted =0 and icx.language_id = lx.id
+                    INNER JOIN sys_city sc ON sc.city_id = ic.ilid 
+                    INNER JOIN sys_borough sb on sb.city_id = ic.ilid AND  sb.boroughs_id= ic.ilceid
+                    WHERE 
+                        ic.language_parent_id =0 and 
+                        ic.active =0 and ic.deleted =0 and 
+                        ic.center_id = ".$centerID." and 
+                        ic.ilid = ".$IlID." and 
+                        ic.ilceid = ".$IlceID." 
+                ) as asdasdasd  
+                order by kontrol desc, ilce, name
+ 
                                " ;
             $statement = $pdo->prepare($sql);
            //  echo debugPDO($sql, $params);
@@ -381,13 +425,13 @@ class InfoCenterCities extends \DAL\DalSlim {
     /** 
      * @author Okan CIRAN
      * su  an kullanılmıyor
-     * @ combobox doldurmak için info_center_cities tablosundan parent ı 0 olan kayıtları (Ana grup) döndürür !!
+     * @ combobox doldurmak için info_center tablosundan parent ı 0 olan kayıtları (Ana grup) döndürür !!
      * @version v 1.0  25.01.2016
      * @param array | null $args
-     * @return array
+     * @return arrays
      * @throws \PDOException
      */
-    public function fillMainCityBorough($params = array()) {
+    public function fillCentersCraft($params = array()) {
         try {
             $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory'); 
             
@@ -395,7 +439,68 @@ class InfoCenterCities extends \DAL\DalSlim {
             if ((isset($params['CountryID']) && $params['CountryID'] != "")) { 
                 $countryID = $params['CountryID'];  
             }
-            $cityID = "-6";                            
+            $CraftsID = "-6";                            
+            if ((isset($params['CraftsID']) && $params['CraftsID'] != "")) { 
+                $CraftsID = $params['CraftsID'];  
+            }
+            $languageIdValue = 647;
+            if (isset($params['LanguageID']) && $params['LanguageID'] != "") {
+                $languageIdValue = $params['LanguageID'];
+            }  
+             
+            $sql = " 
+                
+                SELECT 
+                    icv.id,  
+                    COALESCE(NULLIF(icvx.name, ''), icv.name_eng)  AS name  , 
+                    case idc.active  
+                        when 1 then icc.contact_number 
+                        else idc.contact_number  end as contact_number  , 
+                    COALESCE(NULLIF(icvx.kisaltma, ''), icvx.kisaltmaeng) AS kisaltma , 
+                    COALESCE(NULLIF(icvx.description, ''), icvx.description_eng) AS description ,  
+                    COALESCE(NULLIF(icvx.kisaltma_header, ''), icvx.kisaltma_headereng) AS header , 
+                    icv.logourl, icv.ilid, icv.ilceid, icv.mahalleid
+                 FROM public.info_center_verbal  icv 
+                 LEFT JOIN sys_language lx ON lx.id = ".$languageIdValue." AND lx.deleted =0 AND lx.active =0
+                 INNER JOIN info_center_contacts icc ON icc.center_verbal_id = icv.id 
+                 LEFT JOIN info_default_contacts idc ON idc.deleted =0 and  idc.language_id = lx.id and idc.country_id = icv.country_id 
+                 LEFT JOIN info_center_verbal icvx on (icvx.id = icv.id OR icvx.language_parent_id =icv.id) and icvx.active =0 and icvx.deleted =0 and icvx.language_id = lx.id
+                 WHERE 
+                    icv.country_id = ".$countryID."  AND 
+                    center_verbal_id = ".$CraftsID." 
+         
+                               " ;
+            $statement = $pdo->prepare($sql);
+           //  echo debugPDO($sql, $params);
+            $statement->execute();
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC); 
+            $errorInfo = $statement->errorInfo();
+            if ($errorInfo[0] != "00000" && $errorInfo[1] != NULL && $errorInfo[2] != NULL)
+                throw new \PDOException($errorInfo[0]);
+            return array("found" => true, "errorInfo" => $errorInfo, "resultSet" => $result);
+        } catch (\PDOException $e /* Exception $e */) {        
+            return array("found" => false, "errorInfo" => $e->getMessage());
+        }
+    }
+    
+     /** 
+     * @author Okan CIRAN
+     * su  an kullanılmıyor
+     * @ combobox doldurmak için info_center tablosundan parent ı 0 olan kayıtları (Ana grup) döndürür !!
+     * @version v 1.0  25.01.2016
+     * @param array | null $args
+     * @return arrays
+     * @throws \PDOException
+     */
+    public function fillOfficeInfo($params = array()) {
+        try {
+            $pdo = $this->slimApp->getServiceManager()->get('pgConnectFactory'); 
+            
+            $countryID = "91";                            
+            if ((isset($params['CountryID']) && $params['CountryID'] != "")) { 
+                $countryID = $params['CountryID'];  
+            }
+            $cityID = "6";                            
             if ((isset($params['CityID']) && $params['CityID'] != "")) { 
                 $cityID = $params['CityID'];  
             }
@@ -405,20 +510,45 @@ class InfoCenterCities extends \DAL\DalSlim {
             }  
              
             $sql = "
-                SELECT distinct 
-			a.ilceid as id,  
-                        COALESCE(NULLIF(b.name, ''), b.name_eng) AS name  
-                FROM info_center_cities a	
-		INNER JOIN sys_language l ON l.id = ".$languageIdValue." AND l.deleted =0 AND l.active =0 
-		INNER JOIN sys_countrys c ON  c.language_id = l.id  AND c.deleted =0 AND c.active =0   
-                INNER JOIN sys_borough b on b.country_id = 91 AND b.city_id = a.ilid and b.boroughs_id = a.ilceid AND b.language_id = l.id AND b.deleted =0 AND b.active =0  	
-                INNER JOIN sys_city ci ON ci.country_id = 91 AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0 AND ci.combo =0 
-                WHERE  
-                    c.id = ".$countryID." AND
-                    a.ilid = ".$cityID."   
-		    AND a.deleted =0 AND a.active =0
-                ORDER BY COALESCE(NULLIF(b.name, ''), b.name_eng)
-         
+                SELECT * FROM ( 
+                    SELECT distinct 
+                            a.id as id,  
+                            COALESCE(NULLIF(a.center_name, ''), a.center_name_eng) AS name ,
+                            COALESCE(NULLIF(a.description, ''), a.description_eng) AS description ,
+                            a.priority , 1 as kontrol
+                    FROM info_office_contacts a	
+                    INNER JOIN sys_language l ON l.id = 647 AND l.deleted =0 AND l.active =0 
+                    INNER JOIN sys_countrys c ON  c.language_id = l.id  AND c.deleted =0 AND c.active =0   
+                    INNER JOIN sys_city ci ON ci.country_id = 91 AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0 AND ci.combo =0 
+                    WHERE  
+                        c.id = 91 AND
+                        a.ilid = 6  
+                        AND a.deleted =0 AND a.active =0  and 
+                        0 = (SELECT  count(1)   
+                                    FROM info_office_contacts a	
+                                    INNER JOIN sys_language l ON l.id = ".$languageIdValue." AND l.deleted =0 AND l.active =0 
+                                    INNER JOIN sys_countrys c ON  c.language_id = l.id  AND c.deleted =0 AND c.active =0   
+                                    INNER JOIN sys_city ci ON ci.country_id = 91 AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0 AND ci.combo =0 
+                                    WHERE  
+                                        c.id = ".$countryID." AND
+                                        a.ilid =  ".$cityID."   
+                                        AND a.deleted =0 AND a.active =0) 
+                union 
+                    SELECT distinct 
+                        a.id as id,  
+                        COALESCE(NULLIF(a.center_name, ''), a.center_name_eng) AS name ,
+                        COALESCE(NULLIF(a.description, ''), a.description_eng) AS description ,
+                        a.priority, 0 as kontrol
+                    FROM info_office_contacts a	
+                    INNER JOIN sys_language l ON l.id = ".$languageIdValue." AND l.deleted =0 AND l.active =0 
+                    INNER JOIN sys_countrys c ON  c.language_id = l.id  AND c.deleted =0 AND c.active =0   
+                    INNER JOIN sys_city ci ON ci.country_id = 91 AND ci.city_id = a.ilid AND ci.language_id = l.id AND ci.deleted =0 AND ci.active =0 AND ci.combo =0 
+                    WHERE  
+                        c.id = ".$countryID." AND
+                        a.ilid = ".$cityID."   
+                        AND a.deleted =0 AND a.active =0
+                        ) as sssss
+                ORDER BY kontrol ,priority ,name 
                                " ;
             $statement = $pdo->prepare($sql);
            //  echo debugPDO($sql, $params);

@@ -101,6 +101,10 @@ class BLLManagerConfig{
                 'mobileUserMessagesBLL' => 'BLL\BLL\MobileUserMessages',
                 
                 'infoCenterCitiesBLL' => 'BLL\BLL\InfoCenterCities',
+                'sysCentersBLL' => 'BLL\BLL\SysCenters',
+                'infoCenterPicturesBLL' => 'BLL\BLL\InfoCenterPictures', 
+                'infoCenterBLL' => 'BLL\BLL\InfoCenter', 
+                 
                  
                  
              ),

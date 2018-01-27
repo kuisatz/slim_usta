@@ -99,7 +99,11 @@ class DalManagerConfig {
                 'mobileUserMessagesPDO' => 'DAL\Factory\PDO\MobileUserMessagesFactory',
                 
                 'infoCenterCitiesPDO' => 'DAL\Factory\PDO\InfoCenterCitiesFactory',
-                 
+                'sysCentersPDO' => 'DAL\Factory\PDO\SysCentersFactory', 
+                'infoCenterPicturesPDO' => 'DAL\Factory\PDO\InfoCenterPicturesFactory', 
+                'infoCenterPDO' => 'DAL\Factory\PDO\InfoCenterFactory', 
+                
+                
                 
             ],
         ),

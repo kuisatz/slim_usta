@@ -314,9 +314,172 @@ and open the template in the editor. Ğİ
                         console.warn('error text status-->' + textStatus);
                     }
                 });
+        $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillMainCities_infocentercities', 
+                    ///    country_id: 91,
+                        lid: 647
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                });
     
+                     
+        $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillMainCityBorough_infocentercities', 
+                    ///    countryID: 91,
+                        lid : 647,
+                        cityID : 6
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
               
               
+                $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillGetCenters_syscenters', 
+                     //   coid: 91,
+                        lid : 647,
+                        pid : 0
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
+                  $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillMainPictures_infocenterpictures', 
+                    
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
+                 $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillMainCenterPictures_infocenterpictures', 
+                        cityID : 6,
+                        centerID : 35, 
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
+                
+                $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillMainOfisPictures_infocenterpictures', 
+                       
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
+                
+                
+                   $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillCentersCraftsList_infocenter', 
+                        lid : 647,
+                        cityID : 6,
+                        centerID : 35, 
+                        boroughID : 912, 
+                       
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
+              
+                 $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillOfficeInfo_infocenter', 
+                        lid : 647,
+                        cityID : 6, 
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
+                
+                  $.ajax({
+                    //  url : '../Slim_Proxy_sorubankasi/SlimProxyBoot.php',   
+                    url: '../Slim_Proxy_usta/SlimProxyBoot.php',
+                    data: { 
+                        url: 'FillCentersCraft_infocenter', 
+                        lid : 647,
+                       // cityID : 6, 
+                        craftsID : 132,
+                    },
+                    method: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.warn('error text status-->' + textStatus);
+                    }
+                }); 
                 ////////////////////////
                 
                    

@@ -45,10 +45,10 @@ $app->add(new \Slim\Middleware\MiddlewareMQManager());
  *  * Okan CIRAN
  * @since 25.10.2017
  */
-$app->get("/FillMainCities_infocentercities/", function () use ($app ) {
+$app->get("/FillCentersCraftsList_infocenter/", function () use ($app ) {
     $stripper = $app->getServiceManager()->get('filterChainerCustom');
     $stripChainerFactory = new \Services\Filter\Helper\FilterChainerFactory();
-    $BLL = $app->getBLLManager()->get('infoCenterCitiesBLL'); 
+    $BLL = $app->getBLLManager()->get('infoCenterBLL'); 
     
     $vLanguageID = NULL;
     if (isset($_GET['lid'])) {
@@ -62,26 +62,51 @@ $app->get("/FillMainCities_infocentercities/", function () use ($app ) {
                                                                 $app, 
                                                                 $_GET['coid']));
     }  
-     
+    $vCityID = NULL;
+    if (isset($_GET['cityID'])) {
+        $stripper->offsetSet('cityID', $stripChainerFactory->get(stripChainers::FILTER_ONLY_NUMBER_ALLOWED, 
+                                                                $app, 
+                                                                $_GET['cityID']));
+    } 
+    $vBoroughID = NULL;
+    if (isset($_GET['boroughID'])) {
+        $stripper->offsetSet('boroughID', $stripChainerFactory->get(stripChainers::FILTER_ONLY_NUMBER_ALLOWED, 
+                                                                $app, 
+                                                                $_GET['boroughID']));
+    }  
+    $vCenterID = NULL;
+    if (isset($_GET['centerID'])) {
+        $stripper->offsetSet('centerID', $stripChainerFactory->get(stripChainers::FILTER_ONLY_NUMBER_ALLOWED, 
+                                                                $app, 
+                                                                $_GET['centerID']));
+    } 
+
     $stripper->strip();
     if ($stripper->offsetExists('lid')) 
         {$vLanguageID = $stripper->offsetGet('lid')->getFilterValue(); }   
     if ($stripper->offsetExists('coid')) 
-        {$vCountryID = $stripper->offsetGet('coid')->getFilterValue(); }   
-    
-   
-    $resData = $BLL->fillMainCities(array( 
+        {$vCountryID = $stripper->offsetGet('coid')->getFilterValue(); }  
+    if ($stripper->offsetExists('cityID')) 
+        {$vCityID = $stripper->offsetGet('cityID')->getFilterValue(); }  
+    if ($stripper->offsetExists('boroughID')) 
+        {$vBoroughID = $stripper->offsetGet('boroughID')->getFilterValue(); }  
+    if ($stripper->offsetExists('centerID')) 
+        {$vCenterID = $stripper->offsetGet('centerID')->getFilterValue(); }   
+ 
+    $resData = $BLL->fillCentersCraftsList(array( 
         'url' => $_GET['url'], 
         'LanguageID' => $vLanguageID, 
         'CountryID' => $vCountryID, 
+        'CityID' => $vCityID, 
+        'BoroughID' => $vBoroughID, 
+        'CenterID' => $vCenterID, 
         ));
-    
+
      $menus = array();
     foreach ($resData as $menu){
         $menus[]  = array(
             "id" => $menu["id"],  
-            "name" => html_entity_decode($menu["name"]),
-          //  "priority" =>  ($menu["priority"]),  
+            "name" => html_entity_decode($menu["name"]),  
         );
     }
     
@@ -96,10 +121,73 @@ $app->get("/FillMainCities_infocentercities/", function () use ($app ) {
  *  * Okan CIRAN
  * @since 25.10.2017
  */
-$app->get("/FillMainCityBorough_infocentercities/", function () use ($app ) {
+$app->get("/FillCentersCraft_infocenter/", function () use ($app ) {
     $stripper = $app->getServiceManager()->get('filterChainerCustom');
     $stripChainerFactory = new \Services\Filter\Helper\FilterChainerFactory();
-    $BLL = $app->getBLLManager()->get('infoCenterCitiesBLL'); 
+    $BLL = $app->getBLLManager()->get('infoCenterBLL'); 
+    
+    $vLanguageID = NULL;
+    if (isset($_GET['lid'])) {
+        $stripper->offsetSet('lid', $stripChainerFactory->get(stripChainers::FILTER_ONLY_NUMBER_ALLOWED, 
+                                                                $app, 
+                                                                $_GET['lid']));
+    }   
+    $vCountryID = NULL;
+    if (isset($_GET['coid'])) {
+        $stripper->offsetSet('coid', $stripChainerFactory->get(stripChainers::FILTER_ONLY_NUMBER_ALLOWED, 
+                                                                $app, 
+                                                                $_GET['coid']));
+    }  
+    $vCraftsID = NULL;
+    if (isset($_GET['craftsID'])) {
+        $stripper->offsetSet('craftsID', $stripChainerFactory->get(stripChainers::FILTER_ONLY_NUMBER_ALLOWED, 
+                                                                $app, 
+                                                                $_GET['craftsID']));
+    } 
+
+    $stripper->strip();
+    if ($stripper->offsetExists('lid')) 
+        {$vLanguageID = $stripper->offsetGet('lid')->getFilterValue(); }   
+    if ($stripper->offsetExists('coid')) 
+        {$vCountryID = $stripper->offsetGet('coid')->getFilterValue(); }  
+    if ($stripper->offsetExists('craftsID')) 
+        {$vCraftsID = $stripper->offsetGet('craftsID')->getFilterValue(); }   
+
+    $resData = $BLL->fillCentersCraft(array( 
+        'url' => $_GET['url'], 
+        'LanguageID' => $vLanguageID, 
+        'CountryID' => $vCountryID, 
+        'CraftsID' => $vCraftsID,  
+ 
+        ));
+    
+     $menus = array();
+    foreach ($resData as $menu){
+        $menus[]  = array(
+            "id" => $menu["id"],  
+            "name" => html_entity_decode($menu["name"]),
+             "contact_number" => html_entity_decode($menu["contact_number"]),
+             "kisaltma" => html_entity_decode($menu["kisaltma"]),
+             "description" => html_entity_decode($menu["description"]),
+             "header" => html_entity_decode($menu["header"]),
+        
+        );
+    }
+    
+    $app->response()->header("Content-Type", "application/json"); 
+    $app->response()->body(json_encode($menus));
+     
+}
+);
+
+  /**
+ *  * Okan CIRAN
+ * @since 25.10.2017
+ */
+$app->get("/FillOfficeInfo_infocenter/", function () use ($app ) {
+    $stripper = $app->getServiceManager()->get('filterChainerCustom');
+    $stripChainerFactory = new \Services\Filter\Helper\FilterChainerFactory();
+    $BLL = $app->getBLLManager()->get('infoCenterBLL'); 
     
     $vLanguageID = NULL;
     if (isset($_GET['lid'])) {
@@ -119,21 +207,22 @@ $app->get("/FillMainCityBorough_infocentercities/", function () use ($app ) {
                                                                 $app, 
                                                                 $_GET['cityID']));
     } 
-     
+    
+
     $stripper->strip();
     if ($stripper->offsetExists('lid')) 
         {$vLanguageID = $stripper->offsetGet('lid')->getFilterValue(); }   
     if ($stripper->offsetExists('coid')) 
         {$vCountryID = $stripper->offsetGet('coid')->getFilterValue(); }   
     if ($stripper->offsetExists('cityID')) 
-        {$vCityID = $stripper->offsetGet('cityID')->getFilterValue(); }   
-    
-   
-    $resData = $BLL->fillMainCityBorough(array( 
+        {$vCityID = $stripper->offsetGet('cityID')->getFilterValue(); } 
+  
+
+    $resData = $BLL->fillOfficeInfo(array( 
         'url' => $_GET['url'], 
         'LanguageID' => $vLanguageID, 
-        'CountryID' => $vCountryID, 
-        'CityID' => $vCityID, 
+        'CountryID' => $vCountryID,  
+        'CityID' => $vCityID,   
         ));
     
      $menus = array();
@@ -141,6 +230,7 @@ $app->get("/FillMainCityBorough_infocentercities/", function () use ($app ) {
         $menus[]  = array(
             "id" => $menu["id"],  
             "name" => html_entity_decode($menu["name"]),
+            "description" => html_entity_decode($menu["description"]),
           //  "priority" =>  ($menu["priority"]),  
         );
     }
@@ -149,6 +239,5 @@ $app->get("/FillMainCityBorough_infocentercities/", function () use ($app ) {
     $app->response()->body(json_encode($menus));
      
 }
-);
-  
+);  
 $app->run();
